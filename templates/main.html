@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/assets/favicon.jpg" type="image/x-icon">
+    <title>ALPDS Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Allow vertical scrolling but hide horizontal overflow */
+        }
+        .video-background {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Maintain aspect ratio and cover the background */
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.738); /* Added transparency */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative; /* Ensure content is on top of the video */
+            z-index: 1;
+        }
+        .mainhead{
+            text-align: center;
+            margin-top: 100px;
+            font-size: 50px;
+            color: aliceblue;
+            text-shadow: 2px 2px black;
+            position: relative; /* Ensure heading is on top of the video */
+            z-index: 1;
+        }
+        h1, h2 {
+            margin-top: 0;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .upload-btn {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .upload-btn:hover {
+            background-color: #0056b3;
+        }
+        #recognized_text {
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+        #output_image {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <video src="/static/assets/video.mp4" autoplay muted loop></video>
+    </div>
+    <h1 class="mainhead">Automatic License Plate Detection System</h1>
+    <div class="container">
+        <h2>Upload an Image for Processing</h2>
+        <form id="upload-form" action="/process" method="post" enctype="multipart/form-data">
+            <label for="image-upload" class="upload-btn">Choose Image</label>
+            <input type="file" id="image-upload" name="image" accept="image/*" onchange="updateFileName(this)">
+            <button type="submit" class="upload-btn">Upload and Process</button>
+            <span id="file-name">No file selected</span>
+        </form>
+        <div id="result">
+            <h2>Recognized Text:</h2>
+            <p id="recognized_text"></p>
+            <h2>Output Image:</h2>
+            <img id="output_image" src="/static/assets/sample.jpg" alt="Output Image">
+        </div>
+    </div>
+    <script>
+        function updateFileName(input) {
+            const fileName = input.files[0].name;
+            document.getElementById('file-name').textContent = fileName;
+        }
+
+        document.getElementById('upload-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('/process', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+            document.getElementById('recognized_text').textContent = result.result;
+            document.getElementById('output_image').src = result.image_url;
+        };
+    </script>
+</body>
+</html>
