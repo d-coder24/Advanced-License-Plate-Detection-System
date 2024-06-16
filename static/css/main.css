@@ -1,0 +1,71 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Allow vertical scrolling but hide horizontal overflow */
+}
+.video-background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+.video-background video {
+  min-width: 100%;
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Maintain aspect ratio and cover the background */
+}
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.738); /* Added transparency */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative; /* Ensure content is on top of the video */
+  z-index: 1;
+}
+.mainhead {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 50px;
+  color: aliceblue;
+  text-shadow: 2px 2px black;
+  position: relative; /* Ensure heading is on top of the video */
+  z-index: 1;
+}
+h1,
+h2 {
+  margin-top: 0;
+}
+form {
+  margin-bottom: 20px;
+}
+input[type="file"] {
+  display: none;
+}
+.upload-btn {
+  background-color: #0056b3;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+#recognized_text {
+  margin-top: 20px;
+  white-space: pre-wrap;
+}
+#output_image {
+  max-width: 100%;
+  margin-top: 20px;
+}

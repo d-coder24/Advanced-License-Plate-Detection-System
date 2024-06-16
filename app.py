@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 import cv2
-from matplotlib import pyplot as plt
 import numpy as np
 import pytesseract
 import imutils
 import csv
 import uuid
+import os
 
 app = Flask(__name__)
 
@@ -30,6 +30,11 @@ def main():
 
 @app.route('/process', methods=['POST'])
 def process():
+    # Ensure the "detected_images" folder exists
+    detected_images_path = 'static/detected_images'
+    if not os.path.exists(detected_images_path):
+        os.makedirs(detected_images_path)
+
     # Assuming you upload an image via a form
     file = request.files['image']
     img = cv2.imdecode(np.fromstring(file.read(), np.uint8), cv2.IMREAD_COLOR)
@@ -78,8 +83,10 @@ def process():
 
         # Generate a unique filename for the output image
         output_image_filename = str(uuid.uuid4()) + '.jpg'
+        output_image_path = os.path.join(detected_images_path, output_image_filename)
+
         # Save the final image with the unique filename
-        cv2.imwrite('static/' + output_image_filename, res)
+        cv2.imwrite(output_image_path, res)
 
         # Save the recognized text to a CSV file
         csv_file = "Output_text.csv"
@@ -96,7 +103,7 @@ def process():
             writer.writerow(["Recognized Text_" + str(serial_number)])
             writer.writerow([result_text])
 
-    return jsonify(result=result_text, image_url='static/' + output_image_filename)
+    return jsonify(result=result_text, image_url='static/detected_images/' + output_image_filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
