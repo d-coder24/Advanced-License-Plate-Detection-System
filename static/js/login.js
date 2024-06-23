@@ -7,6 +7,19 @@ document
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
 
+    // Check if the password is at least 8 characters long
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    }
+
+    // // Check if the password is alphanumeric and contains special symbols
+    // var passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\W_]).+$/;
+    // if (!passwordRegex.test(password)) {
+    //   alert("Password must be alphanumeric and contain at least one special symbol.");
+    //   return;
+    // }
+
     // Check if the username and password are correct
     if (username === "darshan24" && password === "Darshan@123") {
       // Redirect to a dashboard or home page
