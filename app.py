@@ -82,7 +82,7 @@ def process():
         res = cv2.rectangle(img, tuple(location[0][0]), tuple(location[2][0]), (0, 255, 0), 3)
 
         # Generate a unique filename for the output image
-        output_image_filename = str(uuid.uuid4()) + '.jpg'
+        output_image_filename = str(uuid.uuid4()) + '.jpeg'
         output_image_path = os.path.join(detected_images_path, output_image_filename)
 
         # Save the final image with the unique filename
